@@ -1,0 +1,108 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "World Coffee Production 2018 (kg per square mile)",
+  "width": 800,
+  "height": 400,
+  "projection": { "type": "equalEarth" },
+  "config": {
+    "title": {
+      "fontSize": 18
+    },
+    "style": {
+      "cell": {
+        "stroke": "transparent"
+      }
+    }
+  },
+
+  "layer": [
+    {
+      "data": { "sphere": true },
+      "mark": { "type": "geoshape", "fill": "lightblue", "opacity": 0.4 }
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/nhee0002/WEEK10_HW/main/data/ne_110m_admin_0_countries.json",
+        "format": { "type": "topojson", "feature": "ne_110m_admin_0_countries" }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "lightgrey",
+        "stroke": "white",
+        "strokeWidth": 0.5,
+        "opacity": 0.8
+      }
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/nhee0002/WEEK10_HW/main/data/ne_110m_admin_0_countries.json",
+        "format": { "type": "topojson", "feature": "ne_110m_admin_0_countries" }
+      },
+      "transform": [
+        {
+          "lookup": "properties.NAME",
+          "from": {
+            "data": {
+              "url": "https://raw.githubusercontent.com/nhee0002/WEEK10_HW/main/data/final_production_data.csv"
+            },
+            "key": "Country",
+            "fields": ["kgpersqmile"]
+          }
+        }
+      ],
+      "mark": { "type": "geoshape", "stroke": "white", "strokeWidth": 0.5 },
+      "encoding": {
+        "color": {
+          "field": "kgpersqmile",
+          "type": "quantitative",
+          "legend": {
+            "title": "Production (kg per square mile)",
+            "orient": "none",
+            "direction": "horizontal",
+            "legendX": 300,
+            "legendY": 420,
+            "titleAlign": "left",
+            "gradientLength": 250
+          },
+          "scale": { "scheme": "goldorange" }
+        },
+        "tooltip": [
+          {
+            "field": "properties.NAME",
+            "type": "nominal",
+            "title": "Production Country"
+          },
+          {
+            "field": "kgpersqmile",
+            "type": "quantitative",
+            "title": "Kilogram per Square Mile"
+          }
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/nhee0002/WEEK10_HW/main/data/ne_110m_graticules_30.json",
+        "format": { "type": "topojson", "feature": "ne_110m_graticules_30" }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": null,
+        "stroke": "darkgrey",
+        "strokeWidth": 0.3,
+        "opacity": 0.5
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "dx": 100,
+        "dy": -8,
+        "baseline": "middle",
+        "fontStyle": "italic"
+      },
+      "encoding": { "text": { "value": "text_annotation" } }
+    }
+  ]
+}
